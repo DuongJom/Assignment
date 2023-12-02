@@ -93,8 +93,9 @@ public class CalculatorInterface {
 
         tmpClients.add(client);
         clients = tmpClients.toArray(clients);
+        noClients++;
     }
-
+    
     private static void DeleteClient() {
 
         System.out.print("Enter client name to delete: ");
