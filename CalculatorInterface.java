@@ -22,9 +22,9 @@ public class CalculatorInterface {
 
         // Input client name
         String name;
+        sc.nextLine();
         do {
             System.out.print("Enter client name: ");
-            sc.nextLine();
             name = sc.nextLine();
 
             if (name.isEmpty() || !name.matches(".*\\s.*")) {
@@ -47,9 +47,9 @@ public class CalculatorInterface {
         // Input resident
         boolean resident;
         String result;
+        sc.nextLine();
         do {
             System.out.print("Are you a resident? [Y/n]: ");
-            sc.nextLine();
             result = sc.nextLine();
 
             if (result.isEmpty() || !validChooseResidents.contains(result.toUpperCase())) {
@@ -95,7 +95,7 @@ public class CalculatorInterface {
         clients = tmpClients.toArray(clients);
         noClients++;
     }
-    
+
     private static void DeleteClient() {
 
         System.out.print("Enter client name to delete: ");
@@ -108,6 +108,7 @@ public class CalculatorInterface {
 
             if (clientToDelete != null) {
                 RemoveClient(clientToDelete);
+                noClients--;
                 ShowMessage("The client was deleted.", false);
             } else {
                 ShowMessage("The client does not exist.", false);
@@ -175,8 +176,8 @@ public class CalculatorInterface {
 
     private static void AddAccount() {
 
-        System.out.print("Enter name of client need to add account: ");
         sc.nextLine();
+        System.out.print("Enter name of client need to add account: ");
         String clientName = sc.nextLine();
 
         Client client = getClientByName(clientName.trim());
@@ -186,7 +187,7 @@ public class CalculatorInterface {
             return;
         }
 
-        if (client.getAccount() != null && client.getAccount().length == 3) {
+        if (client.getAccount() != null && client.getAccountCount() == 3) {
             ShowMessage("Client has already 3 accounts.", false);
             return;
         }
@@ -196,10 +197,10 @@ public class CalculatorInterface {
             System.out.print("Enter investment value: ");
             investment = sc.nextDouble();
 
-            if (investment > client.getInvestmentAmount()) {
+            if (investment < 0) {
                 ShowMessage("Value is invalid!", true);
             }
-        } while (investment > client.getInvestmentAmount());
+        } while (investment < 0);
 
         double rate;
         do {
@@ -310,7 +311,7 @@ public class CalculatorInterface {
                     out.write("Gross Salary: " + client.getGrossSalary() + "\n");
                     out.write("Residential Status: " + (client.getResident() ? "Resident" : "Non-Resident") + "\n");
                     out.write("Weekly Expenses: " + client.getWeeklyExpenses() + "\n");
-                    out.write("Number of Accounts: " + client.getAccount().length + "\n");
+                    out.write("Number of Accounts: " + client.getAccountCount() + "\n");
                     out.write("====================================\n");
 
                     for (Account account : client.getAccount()) {
@@ -388,7 +389,7 @@ public class CalculatorInterface {
     private static Client getClientByName(String name) {
 
         for (Client client : clients) {
-            if (client.getName().equals(name)) {
+            if (client != null && client.getName().equals(name)) {
                 return client;
             }
         }
@@ -420,7 +421,7 @@ public class CalculatorInterface {
 
         Account[] accounts = client.getAccount();
 
-        if (accounts == null || accounts.length == 0) {
+        if (accounts == null || client.getAccountCount() == 0) {
             System.out.println("No investment accounts.");
         } else {
             for (Account account : accounts) {
