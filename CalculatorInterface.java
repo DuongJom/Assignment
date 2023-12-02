@@ -34,13 +34,17 @@ public class CalculatorInterface {
         } while (name.isEmpty() || !name.matches(".*\\s.*"));
 
         // Input annual salary
-        double annualSalary;
+        double annualSalary = 0;
         do {
             System.out.print("Enter annual salary: ");
-            annualSalary = sc.nextDouble();
+            try {
+                annualSalary = sc.nextDouble();
 
-            if (annualSalary <= 0) {
-                ShowMessage("Error: income must be a positive number and different from zero", true);
+                if (annualSalary <= 0) {
+                    ShowMessage("Error: income must be a positive number and different from zero", true);
+                }
+            } catch (Exception e) {
+                ShowMessage("Invalid value.", true);
             }
         } while (annualSalary <= 0);
 
@@ -63,13 +67,18 @@ public class CalculatorInterface {
             resident = false;
 
         // Input weekly expenses
-        double weeklyExpenses;
+        double weeklyExpenses = 0;
         do {
             System.out.print("Enter weekly expenses: ");
-            weeklyExpenses = sc.nextDouble();
-            if (weeklyExpenses <= 0 || weeklyExpenses >= annualSalary / 48) {
-                ShowMessage("Error: expenditure must be a positive number and different from zero", true);
+            try {
+                weeklyExpenses = sc.nextDouble();
+                if (weeklyExpenses <= 0 || weeklyExpenses >= annualSalary / 48) {
+                    ShowMessage("Error: expenditure must be a positive number and different from zero", true);
+                }
+            } catch (Exception e) {
+                ShowMessage("Invalid value.", true);
             }
+
         } while (weeklyExpenses <= 0 || weeklyExpenses >= annualSalary / 48);
 
         // Create a client
@@ -192,33 +201,48 @@ public class CalculatorInterface {
             return;
         }
 
-        double investment;
+        double investment= 0D;
         do {
             System.out.print("Enter investment value: ");
-            investment = sc.nextDouble();
+            try{
+                investment = sc.nextDouble();
 
             if (investment < 0) {
                 ShowMessage("Value is invalid!", true);
             }
+            }
+            catch(Exception e){
+                ShowMessage("Invalid value.", true);
+            }
         } while (investment < 0);
 
-        double rate;
+        double rate = 0D;
         do {
             System.out.print("Enter interest rate: ");
-            rate = sc.nextDouble();
+            try{
+                rate = sc.nextDouble();
 
             if (rate < 0.05 || rate > 0.1) {
                 ShowMessage("Value is invalid!", true);
             }
+            }
+            catch(Exception e){
+                ShowMessage("Invalid value.", true);
+            }
         } while (rate < 0.05 || rate > 0.1);
 
-        int numOfWeeks;
+        int numOfWeeks = 0;
         do {
             System.out.print("Enter investment length: ");
-            numOfWeeks = sc.nextInt();
+            try{
+                numOfWeeks = sc.nextInt();
 
             if (numOfWeeks <= 0) {
                 ShowMessage("Value is invalid!", true);
+            }
+            }
+            catch(Exception e){
+                ShowMessage("Invalid value.", true);
             }
         } while (numOfWeeks <= 0);
 
@@ -243,8 +267,14 @@ public class CalculatorInterface {
         }
 
         System.out.print("Enter the account number (1, 2 or 3): ");
-        int accountNum = sc.nextInt();
-        sc.nextLine(); // consume the newline character
+        int accountNum = 0;
+        try{
+            accountNum = sc.nextInt();
+            sc.nextLine(); // consume the newline character
+        }
+        catch (Exception e){
+            ShowMessage("Invalid account number.", false);
+        }
 
         if (accountNum < 0 || accountNum > 3 || client.getAccount() == null) {
             ShowMessage("The account does not exist!", false);
@@ -289,7 +319,13 @@ public class CalculatorInterface {
         }
 
         System.out.print("Enter the account you want to delete (1, 2 or 3): ");
-        int accountIndex = sc.nextInt();
+        int accountIndex = 0;
+        try{
+            accountIndex = sc.nextInt();
+        }
+        catch(Exception e){
+            ShowMessage("Invalid value.", false);
+        }
 
         if (accountIndex < 0 || accountIndex > 3 || client.getAccount() == null) {
             ShowMessage("Account does not exist!", false);
@@ -326,6 +362,7 @@ public class CalculatorInterface {
                 }
             }
             out.close();
+            ShowMessage("Save file successfully!", false);
         } catch (IOException e) {
             System.out.println("Error saving to file.");
         }
@@ -474,9 +511,13 @@ public class CalculatorInterface {
             ShowMenu();
 
             System.out.print("Enter your choice: ");
-            int choice = sc.nextInt();
+            try {
+                int choice = sc.nextInt();
 
-            HandleMenu(choice);
+                HandleMenu(choice);
+            } catch (Exception ex) {
+                ShowMessage("Invalid choice.", true);
+            }
         }
     }
 }
