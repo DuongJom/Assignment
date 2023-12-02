@@ -174,9 +174,11 @@ public class Client {
 
     public int getAccountCount() {
         int count = 0;
-        for (Account acc : account) {
-            if(acc != null){
-                count++;
+        if (this.account != null) {
+            for (Account acc : account) {
+                if (acc != null) {
+                    count++;
+                }
             }
         }
         return count;

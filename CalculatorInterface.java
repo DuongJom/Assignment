@@ -45,6 +45,7 @@ public class CalculatorInterface {
                 }
             } catch (Exception e) {
                 ShowMessage("Invalid value.", true);
+                sc.nextLine();
             }
         } while (annualSalary <= 0);
 
@@ -77,6 +78,7 @@ public class CalculatorInterface {
                 }
             } catch (Exception e) {
                 ShowMessage("Invalid value.", true);
+                sc.nextLine();
             }
 
         } while (weeklyExpenses <= 0 || weeklyExpenses >= annualSalary / 48);
@@ -201,48 +203,48 @@ public class CalculatorInterface {
             return;
         }
 
-        double investment= 0D;
+        double investment = -1;
         do {
             System.out.print("Enter investment value: ");
-            try{
+            try {
                 investment = sc.nextDouble();
 
-            if (investment < 0) {
-                ShowMessage("Value is invalid!", true);
-            }
-            }
-            catch(Exception e){
+                if (investment < 0) {
+                    ShowMessage("Value is invalid!", true);
+                }
+            } catch (Exception e) {
                 ShowMessage("Invalid value.", true);
+                sc.nextLine();
             }
         } while (investment < 0);
 
         double rate = 0D;
         do {
             System.out.print("Enter interest rate: ");
-            try{
+            try {
                 rate = sc.nextDouble();
 
-            if (rate < 0.05 || rate > 0.1) {
-                ShowMessage("Value is invalid!", true);
-            }
-            }
-            catch(Exception e){
+                if (rate < 0.05 || rate > 0.1) {
+                    ShowMessage("Value is invalid!", true);
+                }
+            } catch (Exception e) {
                 ShowMessage("Invalid value.", true);
+                sc.nextLine();
             }
         } while (rate < 0.05 || rate > 0.1);
 
         int numOfWeeks = 0;
         do {
             System.out.print("Enter investment length: ");
-            try{
+            try {
                 numOfWeeks = sc.nextInt();
 
-            if (numOfWeeks <= 0) {
-                ShowMessage("Value is invalid!", true);
-            }
-            }
-            catch(Exception e){
+                if (numOfWeeks <= 0) {
+                    ShowMessage("Value is invalid!", true);
+                }
+            } catch (Exception e) {
                 ShowMessage("Invalid value.", true);
+                sc.nextLine();
             }
         } while (numOfWeeks <= 0);
 
@@ -268,12 +270,12 @@ public class CalculatorInterface {
 
         System.out.print("Enter the account number (1, 2 or 3): ");
         int accountNum = 0;
-        try{
+        try {
             accountNum = sc.nextInt();
             sc.nextLine(); // consume the newline character
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             ShowMessage("Invalid account number.", false);
+            return;
         }
 
         if (accountNum < 0 || accountNum > 3 || client.getAccount() == null) {
@@ -320,11 +322,11 @@ public class CalculatorInterface {
 
         System.out.print("Enter the account you want to delete (1, 2 or 3): ");
         int accountIndex = 0;
-        try{
+        try {
             accountIndex = sc.nextInt();
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             ShowMessage("Invalid value.", false);
+            return;
         }
 
         if (accountIndex < 0 || accountIndex > 3 || client.getAccount() == null) {
@@ -339,7 +341,7 @@ public class CalculatorInterface {
     private static void SaveFile() {
         try {
 
-            if(noClients == 0){
+            if (noClients == 0) {
                 ShowMessage("No data to write to file.", false);
                 return;
             }
@@ -355,14 +357,15 @@ public class CalculatorInterface {
                     out.write("Weekly Expenses: " + client.getWeeklyExpenses() + "\n");
                     out.write("Number of Accounts: " + client.getAccountCount() + "\n");
                     out.write("====================================\n");
-
-                    for (Account account : client.getAccount()) {
-                        if (account != null) {
-                            out.write("Amount: " + account.getAmount() + "\n");
-                            out.write("Interest Rate: " + account.getRate() + "\n");
-                            out.write("Number of Weeks: " + account.getNumberOfWeeks() + "\n");
-                            out.write(
-                                    "======================================================================================\n");
+                    if (client.getAccountCount() != 0) {
+                        for (Account account : client.getAccount()) {
+                            if (account != null) {
+                                out.write("Amount: " + account.getAmount() + "\n");
+                                out.write("Interest Rate: " + account.getRate() + "\n");
+                                out.write("Number of Weeks: " + account.getNumberOfWeeks() + "\n");
+                                out.write(
+                                        "======================================================================================\n");
+                            }
                         }
                     }
                 }
@@ -523,6 +526,7 @@ public class CalculatorInterface {
                 HandleMenu(choice);
             } catch (Exception ex) {
                 ShowMessage("Invalid choice.", true);
+                sc.nextLine();
             }
         }
     }
