@@ -338,6 +338,12 @@ public class CalculatorInterface {
 
     private static void SaveFile() {
         try {
+
+            if(noClients == 0){
+                ShowMessage("No data to write to file.", false);
+                return;
+            }
+
             FileOutputStream fileOutputStream = new FileOutputStream("clients.txt");
             PrintWriter out = new PrintWriter(fileOutputStream);
 
